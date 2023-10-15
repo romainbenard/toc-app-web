@@ -7,7 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "npx prettier --write .",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -23,6 +22,7 @@
     "eslint": "^8",
     "eslint-config-next": "13.5.4",
     "husky": "^8.0.3",
+    "lint-staged": "^15.0.1",
     "postcss": "^8",
     "prettier": "^3.0.3",
     "tailwindcss": "^3",
