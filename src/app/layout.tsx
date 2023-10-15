@@ -7,6 +7,7 @@ const nunito = Nunito({
   style: ['normal', 'italic'],
   subsets: ['latin'],
   display: 'swap',
+  variable: '--font-nunito',
 })
 
 export const metadata: Metadata = {
