@@ -36,6 +36,7 @@ const config: Config = {
           800: '#2A295F',
           900: '#201F49',
         },
+        error: '#FF3333',
       },
     },
   },
