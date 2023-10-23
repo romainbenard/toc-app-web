@@ -1,4 +1,4 @@
-import LoginPageView from '../views/LoginPageView'
+import LoginPageView from '../../views/LoginPageView'
 
 const LoginPage = () => {
   return <LoginPageView />
