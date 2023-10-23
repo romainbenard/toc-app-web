@@ -1,6 +1,5 @@
-import { Colors } from '@/types/Colors'
-import Input from '@/components/form/Input'
-import LogoWithBaseline from '@/components/ui/LogoWithBaseline'
+import Input from '@/components/ui/Input'
+import LogoWithBaseline from '@/components/Logos/LogoWithBaseline'
 
 const LoginPageView = () => {
   return (

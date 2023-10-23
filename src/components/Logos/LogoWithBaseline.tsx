@@ -14,7 +14,7 @@ const LogoWithBaseline: FunctionComponent<Props> = ({
   className,
 }) => {
   return (
-    <div className={cn('flex flex-col gap-2', className)}>
+    <div className={cn('flex flex-col gap-2 w-fit', className)}>
       <Logo color={color} height={height} />
 
       <svg
