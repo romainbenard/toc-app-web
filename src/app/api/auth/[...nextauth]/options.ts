@@ -3,6 +3,9 @@ import GitHubProvider from 'next-auth/providers/github'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import config from '@/config'
 import { logInValidation } from '@/validations/auth'
+import { User } from '@/types/User'
+import { logInHandler } from '@/server/services/auth/logInHandler'
+import { getUserByEmail } from '@/server/services/users/getUserByEmail'
 
 const { server, auth } = config
 
@@ -27,26 +30,47 @@ export const options: NextAuthOptions = {
       async authorize(credentials) {
         const parse = logInValidation.safeParse(credentials)
 
-        if (!parse.success) {
+        if (!parse.success) return null
+
+        const res = await logInHandler(parse.data)
+
+        if (!res.success || !res.data) {
           return null
         }
 
-        const res = await fetch(`${server.url}/auth/login`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(parse.data),
-        })
-
-        if (!res.ok) {
-          return null
-        }
-
-        const { data } = await res.json()
-
-        return data
+        return res.data
       },
     }),
   ],
+  callbacks: {
+    async signIn({ user, account }) {
+      if (account?.type !== 'credentials' && user.email) {
+        let existedUser: User | null = null
+
+        try {
+          existedUser = await getUserByEmail(user.email)
+        } catch (error) {
+          console.warn(
+            error,
+            '[src/app/api/auth/[...nextauth]/options.ts #getUserByEmail] #signIn'
+          )
+          return false
+        }
+
+        if (!existedUser) {
+          // Add to database
+        }
+
+        return true
+      }
+
+      return true
+    },
+    async redirect({ baseUrl }) {
+      return baseUrl + '/dashboard'
+    },
+    async session({ session, token }) {
+      return { ...session, id: token.sub }
+    },
+  },
 }
