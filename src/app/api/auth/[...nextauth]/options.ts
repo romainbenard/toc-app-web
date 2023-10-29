@@ -2,12 +2,13 @@ import type { NextAuthOptions } from 'next-auth'
 import GitHubProvider from 'next-auth/providers/github'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import config from '@/config'
-import { logInValidation } from '@/validations/auth'
+import { SignUpBody, logInValidation } from '@/validations/auth'
 import { User } from '@/types/User'
 import { logInHandler } from '@/server/services/auth/logInHandler'
-import { getUserByEmail } from '@/server/services/users/getUserByEmail'
+import fetchAppInstance from '@/utils/fetchInstance'
+import { ApiResponse } from '@/types/ApiServer'
 
-const { server, auth } = config
+const { auth, appUrl } = config
 
 export const options: NextAuthOptions = {
   providers: [
@@ -44,21 +45,51 @@ export const options: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account }) {
+      console.log('signIn')
+
       if (account?.type !== 'credentials' && user.email) {
-        let existedUser: User | null = null
+        let existedUser: User | null | undefined = null
 
         try {
-          existedUser = await getUserByEmail(user.email)
+          const res = await fetch(`${appUrl}/api/users/email`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(user.email),
+          })
+          const body: ApiResponse<User> = await res.json()
+
+          if (!body.success) return false
+
+          existedUser = body.data
         } catch (error) {
           console.warn(
             error,
-            '[src/app/api/auth/[...nextauth]/options.ts #getUserByEmail] #signIn'
+            '[src/app/api/auth/[...nextauth]/options.ts] #signIn /api/users/email'
           )
           return false
         }
 
+        console.log('outside IF', { existedUser })
         if (!existedUser) {
-          // Add to database
+          const signUpBody: SignUpBody = {
+            loginType: 'oauth',
+            loginProvider: account?.provider,
+            providerId: user.id,
+            email: user.email,
+            name: user.name || 'randomName',
+          }
+          try {
+            await fetchAppInstance<SignUpBody>(
+              '/users/signup',
+              'POST',
+              signUpBody
+            )
+          } catch (error) {
+            console.error('[api/auth] #signIn #fetchAppInstance', error)
+            return false
+          }
         }
 
         return true
@@ -70,7 +101,7 @@ export const options: NextAuthOptions = {
       return baseUrl + '/dashboard'
     },
     async session({ session, token }) {
-      return { ...session, id: token.sub }
+      return { ...session, token }
     },
   },
 }
