@@ -2,6 +2,7 @@ import { getServerSession } from 'next-auth'
 import React from 'react'
 import { options } from '../api/auth/[...nextauth]/options'
 import { redirect } from 'next/navigation'
+import DashboardPageView from '@/views/DashboardPageView'
 
 const DashboardPage = async () => {
   const session = await getServerSession(options)
@@ -11,12 +12,7 @@ const DashboardPage = async () => {
   }
 
   const { user } = session
-  return (
-    <div>
-      <h1>Welcome {user?.name}</h1>
-      <p>{JSON.stringify(session)}</p>
-    </div>
-  )
+  return <DashboardPageView />
 }
 
 export default DashboardPage
