@@ -1,9 +1,17 @@
 import { z } from 'zod'
 
-export const logInValidation = z.object({
-  email: z.string().email(),
-  password: z.string().min(8),
-})
+export const logInValidation = z.discriminatedUnion('loginType', [
+  z.object({
+    loginType: z.literal('credentials'),
+    email: z.string().email(),
+    password: z.string().min(1),
+  }),
+  z.object({
+    loginType: z.literal('oauth'),
+    email: z.string().email(),
+    providerId: z.string().min(1),
+  }),
+])
 
 const passwordRegex = new RegExp(
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/,
@@ -28,3 +36,4 @@ export const signUpValidation = z.discriminatedUnion('loginType', [
 ])
 
 export type SignUpBody = z.infer<typeof signUpValidation>
+export type LogInBody = z.infer<typeof logInValidation>

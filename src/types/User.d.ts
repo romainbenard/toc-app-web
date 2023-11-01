@@ -1,13 +1,21 @@
-type LoginType = 'oauth' | 'credentials'
+export type LoginType = 'oauth' | 'credentials'
 
-export type User = {
+type UserWithCredential = {
+  loginType: 'credentials'
+  loginProvider: 'credentials'
+  id: string
+  name: string
+  email: string
+  name: string
+  password: string
+}
+
+export type UserWithOAuth = {
+  loginType: 'oauth'
+  loginProvider: string
+  providerId: string
   id: string
   email: string
   name: string
-  userId: string
-  loginType: LoginType
-  loginProvider: string
-  email: string
-  name: string
-  password?: string
 }
+export type User = UserWithCredential | UserWithOAuth
