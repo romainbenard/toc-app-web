@@ -6,7 +6,6 @@ import { NextRequest, NextResponse } from 'next/server'
 const { server } = config
 
 const POST = async (req: NextRequest) => {
-  console.log('POST signup')
   const body = await req.json()
 
   const parse = signUpValidation.safeParse(body)
@@ -27,7 +26,6 @@ const POST = async (req: NextRequest) => {
   })
 
   const data: ApiResponse = await res.json()
-  console.log({ data })
   return NextResponse.json({ data })
 }
 

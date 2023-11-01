@@ -1,15 +1,12 @@
 import config from '@/config'
 import { ApiResponse } from '@/types/ApiServer'
-import { User } from '@/types/User'
+import type { User } from '@/types/User'
+import { TokenData } from '@/types/token'
+import type { LogInBody } from '@/validations/auth'
 
 const { server } = config
 
-type Credentials = {
-  email: string
-  password: string
-}
-
-export const logInHandler = async (credentials: Credentials) => {
+export const logInHandler = async (credentials: LogInBody) => {
   try {
     const res = await fetch(`${server.url}/auth/login`, {
       method: 'POST',
@@ -19,7 +16,8 @@ export const logInHandler = async (credentials: Credentials) => {
       body: JSON.stringify(credentials),
     })
 
-    var data: ApiResponse<User | null> = await res.json()
+    var data: ApiResponse<({ token: TokenData } & User) | null> =
+      await res.json()
   } catch (error) {
     console.warn('[#logInHandler]: ', error)
 

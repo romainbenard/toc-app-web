@@ -17,7 +17,7 @@ export const options: NextAuthOptions = {
       clientSecret: auth.providers.github.secret,
     }),
     CredentialsProvider({
-      name: 'Credientials',
+      name: 'Credentials',
       credentials: {
         email: {
           label: 'Email',
@@ -31,8 +31,8 @@ export const options: NextAuthOptions = {
       async authorize(credentials) {
         const parse = logInValidation.safeParse(credentials)
 
-        if (!parse.success) return null
-
+        if (!parse.success || parse.data.loginType === 'oauth') return null
+        //TODO: Create login API route to do request server-side
         const res = await logInHandler(parse.data)
 
         if (!res.success || !res.data) {
@@ -45,9 +45,7 @@ export const options: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account }) {
-      console.log('signIn')
-
-      if (account?.type !== 'credentials' && user.email) {
+      if (account?.type === 'oauth' && user.email) {
         let existedUser: User | null | undefined = null
 
         try {
@@ -71,7 +69,6 @@ export const options: NextAuthOptions = {
           return false
         }
 
-        console.log('outside IF', { existedUser })
         if (!existedUser) {
           const signUpBody: SignUpBody = {
             loginType: 'oauth',
@@ -80,19 +77,25 @@ export const options: NextAuthOptions = {
             email: user.email,
             name: user.name || 'randomName',
           }
-          try {
-            await fetchAppInstance<SignUpBody>(
-              '/users/signup',
-              'POST',
-              signUpBody
-            )
-          } catch (error) {
-            console.error('[api/auth] #signIn #fetchAppInstance', error)
-            return false
-          }
+
+          await fetchAppInstance<SignUpBody>(
+            '/users/signup',
+            'POST',
+            signUpBody
+          )
         }
 
-        return true
+        //TODO: Create login API route to do request server-side
+        const res = await logInHandler({
+          loginType: account.type,
+          email: user.email,
+          providerId: user.id,
+        })
+
+        if (!res.success || !res.data) return false
+
+        //TODO: check how to set expires with backend jwt
+        user.accessToken = res.data.token.token
       }
 
       return true
@@ -101,7 +104,18 @@ export const options: NextAuthOptions = {
       return baseUrl + '/dashboard'
     },
     async session({ session, token }) {
-      return { ...session, token }
+      if (typeof token.accessToken === 'string') {
+        session.accessToken = token.accessToken
+      }
+
+      return session
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token = { accessToken: user.accessToken }
+      }
+
+      return token
     },
   },
 }
