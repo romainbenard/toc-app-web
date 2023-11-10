@@ -29,17 +29,22 @@ export const options: NextAuthOptions = {
         },
       },
       async authorize(credentials) {
-        const parse = logInValidation.safeParse(credentials)
+        if (!credentials) return null
 
-        if (!parse.success || parse.data.loginType === 'oauth') return null
-        //TODO: Create login API route to do request server-side
-        const res = await logInHandler(parse.data)
+        const res = await logInHandler({
+          ...credentials,
+          loginType: 'credentials',
+        })
 
         if (!res.success || !res.data) {
           return null
         }
 
-        return res.data
+        const { id, email, name, token } = res.data
+        //TODO: manage expire on jwt
+        const user = { id, name, email, accessToken: token.token }
+
+        return user
       },
     }),
   ],
