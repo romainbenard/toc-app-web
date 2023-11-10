@@ -10,7 +10,6 @@ const fetchAppInstance = async <T>(
   body?: T,
   customHeaders?: { [key: string]: string }
 ) => {
-  console.log('fetchAppInstance')
   const headers = {
     'Content-Type': 'application/json',
     ...customHeaders,
@@ -20,18 +19,24 @@ const fetchAppInstance = async <T>(
     method,
     headers,
   }
-  console.log({ body })
-  console.log(`${appUrl}/api${url}`)
+
   return fetch(`${appUrl}/api${url}`, {
     ...options,
     body: JSON.stringify(body),
-  }).then(response => {
-    if (!response.ok) {
-      throw new Error(`Request failed: \n ${response}`)
-    }
-
-    return response.json()
   })
+    .then(res => {
+      if (!res.ok) {
+        // TODO: Update after server response status improvement
+        throw new Error(`Request failed: \n ${res}`)
+      }
+
+      return res.json()
+    })
+    .catch(err => {
+      console.error('[#fetchAppInstance]', err)
+
+      throw new Error(err)
+    })
 }
 
 export default fetchAppInstance

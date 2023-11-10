@@ -2,12 +2,14 @@ import type { NextAuthOptions } from 'next-auth'
 import GitHubProvider from 'next-auth/providers/github'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import config from '@/config'
-import { SignUpBody, logInValidation } from '@/validations/auth'
+import { SignUpBody } from '@/validations/auth'
 import { User } from '@/types/User'
 import { logInHandler } from '@/server/services/auth/logInHandler'
-import fetchAppInstance from '@/utils/fetchInstance'
+import fetchAppInstance from '@/utils/fetchAppInstance'
 import { ApiResponse } from '@/types/ApiServer'
-
+import { verify } from 'jsonwebtoken'
+import { DataStoredInToken } from '@/types/token'
+import { getUserByEmail } from '@/server/services/users/getUserByEmail'
 const { auth, appUrl } = config
 
 export const options: NextAuthOptions = {
@@ -71,7 +73,6 @@ export const options: NextAuthOptions = {
           )
         }
 
-        //TODO: Create login API route to do request server-side
         const res = await logInHandler({
           loginType: account.type,
           email: user.email,
@@ -80,7 +81,6 @@ export const options: NextAuthOptions = {
 
         if (!res.success || !res.data) return false
 
-        //TODO: check how to set expires with backend jwt
         user.accessToken = res.data.token.token
       }
 
@@ -89,9 +89,24 @@ export const options: NextAuthOptions = {
     async redirect({ baseUrl }) {
       return baseUrl + '/dashboard'
     },
-    async session({ session, token }) {
-      if (typeof token.accessToken === 'string') {
+    async session({ session, token, user }) {
+      if (user) {
+        session.user = user
+      }
+
+      const { id } = verify(
+        token.accessToken as string,
+        auth.nextAuthSecret
+      ) as DataStoredInToken
+
+      const res: ApiResponse<User> = await fetchAppInstance(
+        `/users?id=${id}&token=${token.accessToken}`,
+        'GET'
+      )
+
+      if (typeof token.accessToken === 'string' && res.success) {
         session.accessToken = token.accessToken
+        session.user = res.data
       }
 
       return session
