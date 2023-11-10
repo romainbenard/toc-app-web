@@ -45,29 +45,10 @@ export const options: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account }) {
+      if (!user || !account || account.type === 'email') return false
+
       if (account?.type === 'oauth' && user.email) {
-        let existedUser: User | null | undefined = null
-
-        try {
-          const res = await fetch(`${appUrl}/api/users/email`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(user.email),
-          })
-          const body: ApiResponse<User> = await res.json()
-
-          if (!body.success) return false
-
-          existedUser = body.data
-        } catch (error) {
-          console.warn(
-            error,
-            '[src/app/api/auth/[...nextauth]/options.ts] #signIn /api/users/email'
-          )
-          return false
-        }
+        const existedUser = await getUserByEmail(user.email)
 
         if (!existedUser) {
           const signUpBody: SignUpBody = {
