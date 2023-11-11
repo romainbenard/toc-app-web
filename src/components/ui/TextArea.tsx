@@ -3,16 +3,16 @@
 import cn from '@/utils/cn'
 import {
   ChangeEventHandler,
-  InputHTMLAttributes,
+  TextareaHTMLAttributes,
   forwardRef,
   useEffect,
   useState,
 } from 'react'
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {}
+interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {}
 
-const Input = forwardRef<HTMLInputElement, Props>(function Input(
-  { className, type, placeholder, ...props },
+const TextArea = forwardRef<HTMLTextAreaElement, Props>(function Input(
+  { className, placeholder, ...props },
   ref
 ) {
   const [value, setValue] = useState<typeof props.value>(props.value ?? '')
@@ -21,16 +21,15 @@ const Input = forwardRef<HTMLInputElement, Props>(function Input(
     setValue(props.value ?? '')
   }, [props.value])
 
-  const handleChange: ChangeEventHandler<HTMLInputElement> = e => {
+  const handleChange: ChangeEventHandler<HTMLTextAreaElement> = e => {
     setValue(e.target.value)
     if (props.onChange) props.onChange(e)
   }
 
   return (
-    <input
+    <textarea
       {...props}
       ref={ref}
-      type={type}
       className={cn(
         'bg-white rounded-lg p-3 text-secondary-600 placeholder-secondary-200 mb-4',
         className
@@ -42,4 +41,4 @@ const Input = forwardRef<HTMLInputElement, Props>(function Input(
   )
 })
 
-export default Input
+export default TextArea
