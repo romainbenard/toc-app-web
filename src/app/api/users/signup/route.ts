@@ -26,7 +26,7 @@ const POST = async (req: NextRequest) => {
   })
 
   const data: ApiResponse = await res.json()
-  return NextResponse.json({ data })
+  return NextResponse.json(data)
 }
 
 export { POST }
