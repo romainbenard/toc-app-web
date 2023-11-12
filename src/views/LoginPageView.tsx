@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import Label from '@/components/ui/Label'
 import Button from '@/components/ui/Button'
 import ErrorInput from '@/components/ui/ErrorInput'
-import { logInValidation } from '@/validations/auth'
+import { logInValidation } from '@/validations/auth.validation'
 
 interface LoginFormInputs {
   email: string

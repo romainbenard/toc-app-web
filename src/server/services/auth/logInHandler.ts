@@ -2,7 +2,7 @@ import config from '@/config'
 import { ApiResponse } from '@/types/ApiServer'
 import type { User } from '@/types/User'
 import { TokenData } from '@/types/token'
-import type { LogInBody } from '@/validations/auth'
+import type { LogInBody } from '@/validations/auth.validation'
 
 const { server } = config
 
