@@ -38,9 +38,7 @@ const Select = forwardRef<HTMLSelectElement, Props>(function Select(
       value={value}
       onChange={handleChange}
     >
-      <option disabled selected>
-        -
-      </option>
+      <option defaultValue={undefined}>-</option>
       {options.map(({ value, label }) => (
         <option key={value} value={value}>
           {label}

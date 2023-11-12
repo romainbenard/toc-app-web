@@ -32,7 +32,7 @@ const Input = forwardRef<HTMLInputElement, Props>(function Input(
       ref={ref}
       type={type}
       className={cn(
-        'bg-white rounded-lg p-3 text-secondary-600 placeholder-secondary-200 mb-4',
+        'bg-white rounded-lg p-3 text-secondary-600 placeholder-secondary-200',
         className
       )}
       placeholder={placeholder}

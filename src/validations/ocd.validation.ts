@@ -16,7 +16,7 @@ export const createOcdValidation = z.object({
   intensity: z.number({ invalid_type_error: 'Required' }).min(0).max(5),
   location: locationValidation,
   date: z.string(),
-  description: z.string().optional(),
+  description: z.string().max(200).optional(),
   repetition: z.union([z.coerce.number().min(0).max(200), z.nan()]).optional(),
   timeLost: z.union([z.coerce.number().min(0), z.nan()]).optional(),
 })
