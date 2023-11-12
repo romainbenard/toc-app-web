@@ -4,16 +4,23 @@ import { useForm } from 'react-hook-form'
 import Input from '@/components/ui/Input'
 import Label from '@/components/ui/Label'
 import Button from '@/components/ui/Button'
+import { useSession } from 'next-auth/react'
+import { zodResolver } from '@hookform/resolvers/zod'
 import MainLayout from '@/components/Layout/MainLayout'
 import TextArea from '@/components/ui/TextArea'
+import { createOcdValidation } from '@/validations/ocd.validation'
 import Select from '@/components/ui/Select'
-import { OcdCategory, OcdLocation } from '@/types/ocd.d'
+import { Ocd, OcdCategory, OcdLocation } from '@/types/ocd.d'
 import {
   categoryOptions,
   intensityOptions,
   locationOptions,
 } from '@/utils/ocdOptions'
 import ErrorInput from '@/components/ui/ErrorInput'
+import fetchAppInstance from '@/utils/fetchAppInstance'
+import { ApiResponse } from '@/types/ApiServer'
+import { useRouter } from 'next/navigation'
+
 type CreateOcdFormInputs = {
   name: string
   category: OcdCategory
@@ -26,21 +33,46 @@ type CreateOcdFormInputs = {
 }
 
 const CreateOcdPageView = () => {
-  const { register } = useForm<CreateOcdFormInputs>({})
+  const router = useRouter()
+  const { data: session } = useSession()
+
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    setError,
+  } = useForm<CreateOcdFormInputs>({
+    resolver: zodResolver(createOcdValidation),
+  })
+
+  const onSubmit = async (data: CreateOcdFormInputs) => {
+    const res: ApiResponse<Ocd> = await fetchAppInstance<CreateOcdFormInputs>(
+      `/o/create?token=${session?.accessToken}`,
+      'POST',
+      data
+    )
+
+    if (!res.success) {
+      return setError('root.serverError', {
+        message: 'A server error occured, please try again',
+      })
+    }
+
+    router.replace('/dashboard')
+  }
 
   return (
     <MainLayout>
       <div>
         <h1 className="text-2xl font-semibold">Add new ocd</h1>
-        <form className="mt-4 grid grid-cols-4 w-full gap-x-3 bg-secondary-50 py-8 px-6 rounded-xl">
+        <form
+          className="mt-4 grid grid-cols-4 w-full gap-x-3 bg-secondary-50 py-8 px-6 rounded-xl"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div className="flex flex-col col-span-3">
-            <Label name="Category" htmlFor="category" />
-            <Input
-              {...register('category')}
-              type="text"
-              id="category"
-              required
-            />
+            <Label name="Name" htmlFor="name" />
+            <Input {...register('name')} type="text" id="name" required />
+            <ErrorInput error={errors.name?.message || ''} />
           </div>
 
           <div className="flex flex-col col-span-1">
@@ -79,27 +111,30 @@ const CreateOcdPageView = () => {
           <div className="flex flex-col col-span-2">
             <Label name="Repetition" htmlFor="repetition" />
             <Input
-              {...register('repetition')}
+              {...register('repetition', { valueAsNumber: true })}
               type="number"
               id="repetition"
               min={0}
               max={200}
             />
+            <ErrorInput error={errors.repetition?.message || ''} />
           </div>
 
           <div className="flex flex-col col-span-2">
             <Label name="Time lost" htmlFor="timeLost" />
             <Input
-              {...register('timeLost')}
+              {...register('timeLost', { valueAsNumber: true })}
               type="number"
               id="timeLost"
               min={0}
             />
+            <ErrorInput error={errors.timeLost?.message || ''} />
           </div>
 
           <div className="flex flex-col col-span-4">
             <Label name="Date" htmlFor="date" />
             <Input {...register('date')} type="date" id="date" required />
+            <ErrorInput error={errors.date?.message || ''} />
           </div>
 
           <div className="flex flex-col col-span-4">
@@ -109,8 +144,8 @@ const CreateOcdPageView = () => {
               rows={4}
               maxLength={280}
               id="description"
-              required
             />
+            <ErrorInput error={errors.description?.message || ''} />
           </div>
 
           <div>
@@ -119,6 +154,7 @@ const CreateOcdPageView = () => {
             </Button>
           </div>
         </form>
+        <ErrorInput error={errors.root?.serverError.message || ''} />
       </div>
     </MainLayout>
   )

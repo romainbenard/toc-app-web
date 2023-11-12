@@ -7,12 +7,10 @@ type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 const fetchAppInstance = async <T>(
   url: string,
   method: HTTPMethod,
-  body?: T,
-  customHeaders?: { [key: string]: string }
+  body?: T
 ) => {
   const headers = {
     'Content-Type': 'application/json',
-    ...customHeaders,
   }
 
   const options = {
@@ -33,8 +31,6 @@ const fetchAppInstance = async <T>(
       return res.json()
     })
     .catch(err => {
-      console.error('[#fetchAppInstance]', err)
-
       throw new Error(err)
     })
 }
