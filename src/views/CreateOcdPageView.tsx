@@ -6,12 +6,20 @@ import Label from '@/components/ui/Label'
 import Button from '@/components/ui/Button'
 import MainLayout from '@/components/Layout/MainLayout'
 import TextArea from '@/components/ui/TextArea'
-
-interface CreateOcdFormInputs {
-  category: string
+import Select from '@/components/ui/Select'
+import { OcdCategory, OcdLocation } from '@/types/ocd.d'
+import {
+  categoryOptions,
+  intensityOptions,
+  locationOptions,
+} from '@/utils/ocdOptions'
+import ErrorInput from '@/components/ui/ErrorInput'
+type CreateOcdFormInputs = {
+  name: string
+  category: OcdCategory
   intensity: number
-  location: string
-  date: Date
+  location: OcdLocation
+  date: string
   description?: string
   repetition?: number
   timeLost?: number
@@ -37,29 +45,35 @@ const CreateOcdPageView = () => {
 
           <div className="flex flex-col col-span-1">
             <Label name="Intensity" htmlFor="intensity" />
-            <Input
-              {...register('intensity')}
-              type="number"
+            <Select
+              {...register('intensity', { valueAsNumber: true })}
+              options={intensityOptions}
               id="intensity"
               required
-              min={1}
-              max={5}
             />
+            <ErrorInput error={errors.intensity?.message || ''} />
           </div>
 
           <div className="flex flex-col col-span-2">
             <Label name="Location" htmlFor="location" />
-            <Input {...register('location')} type="text" id="location" />
+            <Select
+              {...register('location')}
+              id="location"
+              options={locationOptions}
+              required
+            />
+            <ErrorInput error={errors.location?.message || ''} />
           </div>
 
           <div className="flex flex-col col-span-2">
             <Label name="Category" htmlFor="category" />
-            <Input
+            <Select
               {...register('category')}
-              type="text"
               id="category"
+              options={categoryOptions}
               required
             />
+            <ErrorInput error={errors.category?.message || ''} />
           </div>
 
           <div className="flex flex-col col-span-2">
