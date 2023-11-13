@@ -37,6 +37,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, Props>(function Input(
       placeholder={placeholder}
       value={value}
       onChange={handleChange}
+      rows={props.rows ?? 3}
     />
   )
 })

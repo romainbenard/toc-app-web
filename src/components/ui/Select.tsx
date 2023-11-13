@@ -31,7 +31,7 @@ const Select = forwardRef<HTMLSelectElement, Props>(function Select(
       {...props}
       ref={ref}
       className={cn(
-        'bg-white rounded-lg p-3 text-secondary-600 placeholder-secondary-200',
+        'h-10 bg-white rounded-lg p-2 text-secondary-600 placeholder-secondary-200',
         className
       )}
       placeholder={placeholder}

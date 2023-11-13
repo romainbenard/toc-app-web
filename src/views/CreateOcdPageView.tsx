@@ -141,7 +141,6 @@ const CreateOcdPageView = () => {
             <Label name="Description" htmlFor="description" />
             <TextArea
               {...register('description')}
-              rows={4}
               maxLength={280}
               id="description"
             />
@@ -149,9 +148,7 @@ const CreateOcdPageView = () => {
           </div>
 
           <div>
-            <Button type="submit" className="mt-4">
-              Envoyer
-            </Button>
+            <Button type="submit">Envoyer</Button>
           </div>
         </form>
         <ErrorInput error={errors.root?.serverError.message || ''} />
