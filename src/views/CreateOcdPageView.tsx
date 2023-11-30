@@ -58,7 +58,7 @@ const CreateOcdPageView = () => {
       })
     }
 
-    router.replace('/dashboard')
+    router.replace(`/ocd/${res.data?.id}`)
   }
 
   return (
