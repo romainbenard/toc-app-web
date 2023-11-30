@@ -3,13 +3,11 @@ import GitHubProvider from 'next-auth/providers/github'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import config from '@/config'
 import { SignUpBody } from '@/validations/auth.validation'
-import { User } from '@/types/User'
 import { logInUser, signUpUser } from '@/server/services/auth'
-import fetchAppInstance from '@/utils/fetchAppInstance'
-import { ApiResponse } from '@/types/ApiServer'
 import { verify } from 'jsonwebtoken'
 import { DataStoredInToken } from '@/types/token'
 import { getUserByEmail } from '@/server/services/users/getUserByEmail'
+import { getUserById } from '@/server/services/users/getUserById'
 const { auth } = config
 
 export const options: NextAuthOptions = {
@@ -93,14 +91,11 @@ export const options: NextAuthOptions = {
         auth.nextAuthSecret
       ) as DataStoredInToken
 
-      const res: ApiResponse<User> = await fetchAppInstance(
-        `/users?id=${id}&token=${token.accessToken}`,
-        'GET'
-      )
+      const findUser = await getUserById(id, token.accessToken as string)
 
-      if (typeof token.accessToken === 'string' && res.success) {
+      if (typeof token.accessToken === 'string' && findUser) {
         session.accessToken = token.accessToken
-        session.user = res.data
+        session.user = findUser
       }
 
       return session
