@@ -1,7 +1,6 @@
-import { getUserByEmail } from '@/server/services/users/getUserByEmail'
-
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
+import { getUserByEmail } from '@/server/services/users/getUserByEmail'
 
 const emailValidation = z.string().email()
 

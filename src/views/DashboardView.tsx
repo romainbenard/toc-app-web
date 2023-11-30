@@ -1,6 +1,6 @@
-import MainLayout from '@/components/Layout/MainLayout'
 import Link from 'next/link'
 import { Session } from 'next-auth'
+import MainLayout from '@/components/Layout/MainLayout'
 
 type Props = { user: Session['user'] }
 

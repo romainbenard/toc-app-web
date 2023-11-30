@@ -1,15 +1,14 @@
 'use client'
 
-import { Colors } from '@/types/Colors.d'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import Input from '@/components/ui/Input'
 import LogoWithBaseline from '@/components/Logos/LogoWithBaseline'
-import { zodResolver } from '@hookform/resolvers/zod'
-import Label from '@/components/ui/Label'
 import Button from '@/components/ui/Button'
 import ErrorInput from '@/components/ui/ErrorInput'
-import { logInValidation } from '@/validations/auth.validation'
+import Input from '@/components/ui/Input'
+import Label from '@/components/ui/Label'
+import { Colors } from '@/types/Colors.d'
 
 interface LoginFormInputs {
   email: string

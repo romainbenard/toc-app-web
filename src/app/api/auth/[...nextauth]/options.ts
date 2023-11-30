@@ -1,13 +1,13 @@
 import type { NextAuthOptions } from 'next-auth'
-import GitHubProvider from 'next-auth/providers/github'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import config from '@/config'
-import { SignUpBody } from '@/validations/auth.validation'
-import { logInUser, signUpUser } from '@/server/services/auth'
+import GitHubProvider from 'next-auth/providers/github'
 import { verify } from 'jsonwebtoken'
-import { DataStoredInToken } from '@/types/token'
+import config from '@/config'
+import { logInUser, signUpUser } from '@/server/services/auth'
 import { getUserByEmail } from '@/server/services/users/getUserByEmail'
 import { getUserById } from '@/server/services/users/getUserById'
+import { DataStoredInToken } from '@/types/token'
+import { SignUpBody } from '@/validations/auth.validation'
 const { auth } = config
 
 export const options: NextAuthOptions = {

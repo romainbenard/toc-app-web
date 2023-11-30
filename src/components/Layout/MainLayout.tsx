@@ -1,6 +1,6 @@
 import React, { FC, PropsWithChildren } from 'react'
-import NavBar from '../NavBar'
 import Header from '../Header'
+import NavBar from '../NavBar'
 
 const MainLayout: FC<PropsWithChildren> = ({ children }) => {
   return (

@@ -1,5 +1,5 @@
-import cn from '@/utils/cn'
 import { FC, LabelHTMLAttributes } from 'react'
+import cn from '@/utils/cn'
 
 interface Props extends LabelHTMLAttributes<HTMLLabelElement> {
   name: string

@@ -1,6 +1,6 @@
-import Link from 'next/link'
 import React, { FC, PropsWithChildren } from 'react'
-import { Bookmark, Home, List, Server, User } from 'react-feather'
+import Link from 'next/link'
+import { Bookmark, Home, User } from 'react-feather'
 
 const NavItem: FC<PropsWithChildren<{ url: string }>> = ({ url, children }) => (
   <li className="text-secondary-300 text-sm">

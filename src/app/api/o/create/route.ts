@@ -1,9 +1,8 @@
+import { NextRequest, NextResponse } from 'next/server'
 import config from '@/config'
 import { ApiResponse } from '@/types/ApiServer'
 import { Ocd } from '@/types/ocd.d'
 import { createOcdValidation } from '@/validations/ocd.validation'
-
-import { NextRequest, NextResponse } from 'next/server'
 
 const { server } = config
 

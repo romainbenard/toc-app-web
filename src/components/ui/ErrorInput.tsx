@@ -1,5 +1,5 @@
-import cn from '@/utils/cn'
 import { FC, HTMLAttributes } from 'react'
+import cn from '@/utils/cn'
 
 interface Props extends HTMLAttributes<HTMLParagraphElement> {
   error: string
