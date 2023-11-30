@@ -1,47 +1,26 @@
 'use client'
 
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import Input from '@/components/ui/Input'
-import Label from '@/components/ui/Label'
-import Button from '@/components/ui/Button'
 import { useSession } from 'next-auth/react'
+import MainLayout from '@/components/Layout/MainLayout'
+import Link from 'next/link'
 
 const DashboardPageView = () => {
-  const { data: session, status } = useSession()
-
-  const { register } = useForm<CreateOcdFormInputs>()
+  const { data: session } = useSession()
 
   return (
-    <main className="w-screen h-screen bg-secondary-300 flex flex-col items-center justify-center p-8 gap-8">
-      <form className="mt-8 flex flex-col w-full items-center">
-        <div className="flex flex-col self-stretch">
-          <Label name="category" htmlFor="category" className="text-white" />
-          <Input {...register('category')} type="text" id="category" required />
-        </div>
+    <MainLayout>
+      <main className="w-screen h-screen flex flex-col items-center justify-center p-8 gap-8">
+        <h1 className="text-secondary-500">
+          Hello {session?.user?.name || 'you'} !
+        </h1>
 
-        <div className="flex flex-col self-stretch">
-          <Label name="intensity" htmlFor="intensity" className="text-white" />
-          <Input
-            {...register('intensity')}
-            type="number"
-            id="intensity"
-            required
-            min={1}
-            max={5}
-          />
-        </div>
-
-        <div className="flex flex-col self-stretch">
-          <Label name="location" htmlFor="location" className="text-white" />
-          <Input {...register('location')} type="text" id="location" required />
-        </div>
-
-        <Button type="submit" className="mt-8">
-          Envoyer
-        </Button>
-      </form>
-    </main>
+        <Link href="/ocd/new">
+          <div className="flex justify-center items-center h-12 w-12 rounded-[50%] bg-primary-500 text-white font-semibold text-4xl">
+            +
+          </div>
+        </Link>
+      </main>
+    </MainLayout>
   )
 }
 

@@ -2,8 +2,8 @@
   "name": "TOC | Ocd Tracker",
   "short_name": "TOC",
   "description": "Your assistant to monitor the evolution of your OCDs over time",
-  "start_url": "/",
-  "display": "minimal-ui",
+  "start_url": "/dashboard",
+  "display": "standalone",
   "icons": [
     {
       "src": "/toc-icon.svg",

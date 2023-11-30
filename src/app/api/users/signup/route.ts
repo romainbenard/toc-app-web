@@ -1,6 +1,6 @@
 import config from '@/config'
 import { ApiResponse } from '@/types/ApiServer'
-import { signUpValidation } from '@/validations/auth'
+import { signUpValidation } from '@/validations/auth.validation'
 import { NextRequest, NextResponse } from 'next/server'
 
 const { server } = config
@@ -26,7 +26,7 @@ const POST = async (req: NextRequest) => {
   })
 
   const data: ApiResponse = await res.json()
-  return NextResponse.json({ data })
+  return NextResponse.json(data)
 }
 
 export { POST }
