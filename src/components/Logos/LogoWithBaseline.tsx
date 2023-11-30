@@ -1,7 +1,7 @@
 import { FunctionComponent, HTMLAttributes } from 'react'
 import { Colors } from '@/types/Colors.d'
-import Logo from './Logo'
 import cn from '@/utils/cn'
+import Logo from './Logo'
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   color?: Colors

@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
-import Logo from './Logos/Logo'
 import Link from 'next/link'
+import Logo from './Logos/Logo'
 
 const Header: FC = () => {
   return (

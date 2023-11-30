@@ -1,5 +1,5 @@
-import { getUserById } from '@/server/services/users/getUserById'
 import { NextRequest, NextResponse } from 'next/server'
+import { getUserById } from '@/server/services/users/getUserById'
 
 export const GET = async (req: NextRequest) => {
   const { searchParams } = new URL(req.url)

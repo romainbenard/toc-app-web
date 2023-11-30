@@ -1,13 +1,12 @@
 'use client'
 
-import cn from '@/utils/cn'
 import {
   ChangeEventHandler,
-  SelectHTMLAttributes,
   forwardRef,
-  useEffect,
+  SelectHTMLAttributes,
   useState,
 } from 'react'
+import cn from '@/utils/cn'
 
 interface Props extends SelectHTMLAttributes<HTMLSelectElement> {
   options: {

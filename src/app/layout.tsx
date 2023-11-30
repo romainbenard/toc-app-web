@@ -1,7 +1,8 @@
-import './globals.css'
 import type { Metadata } from 'next'
 import { Nunito } from 'next/font/google'
 import NextAuthProvider from './context/NextAuthProvider'
+
+import './globals.css'
 
 const nunito = Nunito({
   weight: ['300', '400', '600', '700'],
