@@ -10,7 +10,8 @@ import { ApiResponse } from '@/types/ApiServer'
 import { verify } from 'jsonwebtoken'
 import { DataStoredInToken } from '@/types/token'
 import { getUserByEmail } from '@/server/services/users/getUserByEmail'
-const { auth, appUrl } = config
+import { signUpUser } from '@/server/services/auth/signUpUser'
+const { auth } = config
 
 export const options: NextAuthOptions = {
   providers: [
@@ -66,11 +67,7 @@ export const options: NextAuthOptions = {
             name: user.name || 'randomName',
           }
 
-          await fetchAppInstance<SignUpBody>(
-            '/users/signup',
-            'POST',
-            signUpBody
-          )
+          await signUpUser(signUpBody)
         }
 
         const res = await logInHandler({
