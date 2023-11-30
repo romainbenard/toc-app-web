@@ -10,6 +10,7 @@ const { appUrl } = config
 
 const SingleOcd = async () => {
   const session = await getServerSession(options)
+
   const headersList = headers()
   const header_url = headersList.get('x-url') || ''
 
