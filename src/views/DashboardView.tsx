@@ -4,7 +4,7 @@ import { Session } from 'next-auth'
 
 type Props = { user: Session['user'] }
 
-const DashboardPageView = ({ user }: Props) => {
+const DashboardView = ({ user }: Props) => {
   return (
     <MainLayout>
       <div className="h-full flex flex-col items-center justify-center p-8 gap-8">
@@ -20,4 +20,4 @@ const DashboardPageView = ({ user }: Props) => {
   )
 }
 
-export default DashboardPageView
+export default DashboardView
