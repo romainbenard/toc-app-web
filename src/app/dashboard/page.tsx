@@ -11,8 +11,7 @@ const DashboardPage = async () => {
     redirect('http://localhost:3000/api/auth/signin/providers')
   }
 
-  const { user } = session
-  return <DashboardView user={user} />
+  return <DashboardView user={session.user} />
 }
 
 export default DashboardPage
