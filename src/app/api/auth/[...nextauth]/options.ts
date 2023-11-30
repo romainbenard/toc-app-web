@@ -4,7 +4,7 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import config from '@/config'
 import { SignUpBody } from '@/validations/auth.validation'
 import { User } from '@/types/User'
-import { logInHandler } from '@/server/services/auth/logInHandler'
+import { logInUser } from '@/server/services/auth/logInUser'
 import fetchAppInstance from '@/utils/fetchAppInstance'
 import { ApiResponse } from '@/types/ApiServer'
 import { verify } from 'jsonwebtoken'
@@ -34,16 +34,14 @@ export const options: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials) return null
 
-        const res = await logInHandler({
+        const res = await logInUser({
           ...credentials,
           loginType: 'credentials',
         })
 
-        if (!res.success || !res.data) {
-          return null
-        }
+        if (!res) return null
 
-        const { id, email, name, token } = res.data
+        const { id, email, name, token } = res
         //TODO: manage expire on jwt
         const user = { id, name, email, accessToken: token.token }
 
@@ -70,15 +68,15 @@ export const options: NextAuthOptions = {
           await signUpUser(signUpBody)
         }
 
-        const res = await logInHandler({
+        const res = await logInUser({
           loginType: account.type,
           email: user.email,
           providerId: user.id,
         })
 
-        if (!res.success || !res.data) return false
+        if (!res) return false
 
-        user.accessToken = res.data.token.token
+        user.accessToken = res.token.token
       }
 
       return true
