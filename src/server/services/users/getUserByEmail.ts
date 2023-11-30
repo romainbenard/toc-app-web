@@ -12,14 +12,14 @@ export const getUserByEmail = async (email: string) => {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(email),
+    body: JSON.stringify({ email }),
   })
 
   if (!res.ok) return null
 
   const data: ApiResponse<User | null> = await res.json()
 
-  if (!data.success) return null
+  if (!data.success || !data.data) return null
 
-  return data.data!
+  return data.data
 }
