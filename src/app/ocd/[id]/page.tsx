@@ -18,7 +18,7 @@ const SingleOcd = async () => {
 
   if (!session || !session.accessToken || !ocdId) return notFound()
 
-  const ocd = await getOcd(ocdId, session?.accessToken)
+  const ocd = await getOcd(ocdId, session.accessToken)
 
   if (!ocd) return notFound()
 
