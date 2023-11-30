@@ -4,13 +4,12 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import config from '@/config'
 import { SignUpBody } from '@/validations/auth.validation'
 import { User } from '@/types/User'
-import { logInUser } from '@/server/services/auth/logInUser'
+import { logInUser, signUpUser } from '@/server/services/auth'
 import fetchAppInstance from '@/utils/fetchAppInstance'
 import { ApiResponse } from '@/types/ApiServer'
 import { verify } from 'jsonwebtoken'
 import { DataStoredInToken } from '@/types/token'
 import { getUserByEmail } from '@/server/services/users/getUserByEmail'
-import { signUpUser } from '@/server/services/auth/signUpUser'
 const { auth } = config
 
 export const options: NextAuthOptions = {
