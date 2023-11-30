@@ -7,12 +7,12 @@ import DashboardPageView from '@/views/DashboardPageView'
 const DashboardPage = async () => {
   const session = await getServerSession(options)
 
-  // if (!session) {
-  //   redirect('http://localhost:3000/api/auth/signin/providers')
-  // }
+  if (!session || !session.user) {
+    redirect('http://localhost:3000/api/auth/signin/providers')
+  }
 
-  // const { user } = session
-  return <DashboardPageView />
+  const { user } = session
+  return <DashboardPageView user={user} />
 }
 
 export default DashboardPage
