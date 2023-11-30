@@ -6,13 +6,13 @@ import 'server-only'
 
 const { server } = config
 
-export const getUserByEmail = async (email: string) => {
-  const res = await fetch(`${server.url}/users/email`, {
-    method: 'POST',
+export const getUserById = async (id: string, token: string) => {
+  const res = await fetch(`${server.url}/users/${id}`, {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ email }),
   })
 
   if (!res.ok) return null

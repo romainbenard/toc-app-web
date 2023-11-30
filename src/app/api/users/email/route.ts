@@ -1,10 +1,7 @@
-import config from '@/config'
-import { ApiResponse } from '@/types/ApiServer'
-import { User } from '@/types/User'
+import { getUserByEmail } from '@/server/services/users/getUserByEmail'
+
 import { NextRequest, NextResponse } from 'next/server'
 import { z } from 'zod'
-
-const { server } = config
 
 const emailValidation = z.string().email()
 
@@ -20,17 +17,9 @@ const POST = async (req: NextRequest) => {
     )
   }
 
-  const res = await fetch(`${server.url}/users/email`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email: parse.data }),
-  })
+  const user = await getUserByEmail(parse.data)
 
-  const data: ApiResponse<User | null> = await res.json()
-
-  return NextResponse.json(data)
+  return NextResponse.json(user)
 }
 
 export { POST }
