@@ -2,6 +2,8 @@ import config from '@/config'
 import { ApiResponse } from '@/types/ApiServer'
 import { User } from '@/types/User'
 
+import 'server-only'
+
 const { server } = config
 
 export const getUserByEmail = async (email: string) => {
