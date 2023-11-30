@@ -9,7 +9,7 @@ const DashboardPageView = () => {
 
   return (
     <MainLayout>
-      <main className="w-screen h-screen flex flex-col items-center justify-center p-8 gap-8">
+      <div className="h-full flex flex-col items-center justify-center p-8 gap-8">
         <h1 className="text-secondary-500">
           Hello {session?.user?.name || 'you'} !
         </h1>
@@ -19,7 +19,7 @@ const DashboardPageView = () => {
             +
           </div>
         </Link>
-      </main>
+      </div>
     </MainLayout>
   )
 }
