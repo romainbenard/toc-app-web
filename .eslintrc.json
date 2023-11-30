@@ -1,5 +1,5 @@
 {
-  "extends": ["next/core-web-vitals"],
+  "extends": ["next"],
   "plugins": ["prettier", "unused-imports", "simple-import-sort"],
   "env": {
     "es6": true
