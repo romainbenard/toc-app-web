@@ -34,7 +34,7 @@ type CreateOcdFormInputs = {
 
 type Props = { user: Session['user'] }
 
-const CreateOcdPageView = ({ user }: Props) => {
+const CreateOcdView = ({ user }: Props) => {
   const router = useRouter()
 
   const {
@@ -156,4 +156,4 @@ const CreateOcdPageView = ({ user }: Props) => {
   )
 }
 
-export default CreateOcdPageView
+export default CreateOcdView

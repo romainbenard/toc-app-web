@@ -1,5 +1,5 @@
 import { options } from '@/app/api/auth/[...nextauth]/options'
-import CreateOcdPageView from '@/views/CreateOcdPageView'
+import CreateOcdView from '@/views/CreateOcdView'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 
@@ -9,7 +9,7 @@ const CreateOcdPage = async () => {
   if (!session || !session.user) {
     redirect('http://localhost:3000/api/auth/signin/providers')
   }
-  return <CreateOcdPageView user={session.user} />
+  return <CreateOcdView user={session.user} />
 }
 
 export default CreateOcdPage
