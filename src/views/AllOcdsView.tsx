@@ -19,8 +19,8 @@ const AllOcdsView = ({ ocds }: Props) => {
           ))}
         </ul>
       ) : (
-        <Link href="/ocd/new" className="text-black">
-          Add your first ocd
+        <Link href="/ocds/new" className="text-black">
+          Add my first ocd
         </Link>
       )}
     </MainLayout>

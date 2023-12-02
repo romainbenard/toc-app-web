@@ -14,7 +14,7 @@ const SingleOcd = async () => {
   const headersList = headers()
   const header_url = headersList.get('x-url') || ''
 
-  const ocdId = header_url.split(`${appUrl}/ocd/`)[1]
+  const ocdId = header_url.split(`${appUrl}/ocds/`)[1]
 
   if (!session || !session.accessToken || !ocdId) return notFound()
 
