@@ -20,3 +20,12 @@ export const createOcdValidation = z.object({
   repetition: z.union([z.coerce.number().min(0).max(200), z.nan()]).optional(),
   timeLost: z.union([z.coerce.number().min(0), z.nan()]).optional(),
 })
+
+export const queryOcdsValidation = z.object({
+  category: categoryValidation.optional(),
+  location: locationValidation.optional(),
+  date: z.string().optional(),
+  authorId: z.string().optional(),
+})
+
+export type QueryOcds = z.infer<typeof queryOcdsValidation>
