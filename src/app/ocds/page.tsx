@@ -1,14 +1,17 @@
 import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 import { options } from '@/app/api/auth/[...nextauth]/options'
+import config from '@/config'
 import { getOcds } from '@/server/services/ocds/getOcds'
 import AllOcdsView from '@/views/AllOcdsView'
+
+const { appUrl } = config
 
 const OcdsPage = async () => {
   const session = await getServerSession(options)
 
   if (!session || !session.user || !session.accessToken) {
-    redirect('http://localhost:3000/api/auth/signin/providers')
+    redirect(`${appUrl}/api/auth/signin/providers`)
   }
 
   const { user, accessToken } = session
