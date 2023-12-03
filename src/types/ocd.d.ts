@@ -18,7 +18,7 @@ type Ocd = {
   category: OcdCategory
   intensity: number
   location: string
-  date: Date
+  date: string
   description?: string
   repetition?: number
   timeLost?: number

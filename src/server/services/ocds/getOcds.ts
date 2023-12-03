@@ -16,11 +16,11 @@ export const getOcds = async (query: QueryOcds, token: string) => {
     },
   })
 
-  if (!res.ok) return { number: 0, ocds: [] }
+  if (!res.ok) return []
 
-  const data: ApiResponse<{ number: number; ocds: Ocd[] }> = await res.json()
+  const data: ApiResponse<Ocd[]> = await res.json()
 
-  if (!data.success || !data.data) return { number: 0, ocds: [] }
+  if (!data.success || !data.data) return []
 
   return data.data
 }
