@@ -59,7 +59,7 @@ const CreateOcdView = ({ user }: Props) => {
       })
     }
 
-    router.replace(`/ocd/${res.data?.id}`)
+    router.replace(`/ocds/${res.data?.id}`)
   }
 
   return (
