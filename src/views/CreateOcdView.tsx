@@ -32,9 +32,9 @@ type CreateOcdFormInputs = {
   timeLost?: number
 }
 
-type Props = { user: Session['user'] }
+type Props = { user: Session['user']; token: string }
 
-const CreateOcdView = ({ user }: Props) => {
+const CreateOcdView = ({ token }: Props) => {
   const router = useRouter()
 
   const {
@@ -48,7 +48,7 @@ const CreateOcdView = ({ user }: Props) => {
 
   const onSubmit = async (data: CreateOcdFormInputs) => {
     const res: ApiResponse<Ocd> = await fetchAppInstance<CreateOcdFormInputs>(
-      `/o/create?token=${user?.accessToken}`,
+      `/o/create?token=${token}`,
       'POST',
       data
     )

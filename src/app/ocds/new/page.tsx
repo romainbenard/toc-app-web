@@ -9,11 +9,11 @@ const { appUrl } = config
 const CreateOcdPage = async () => {
   const session = await getServerSession(options)
 
-  if (!session || !session.user) {
+  if (!session || !session.user || !session.accessToken) {
     redirect(`${appUrl}/api/auth/signin/providers`)
   }
 
-  return <CreateOcdView user={session.user} />
+  return <CreateOcdView user={session.user} token={session.accessToken} />
 }
 
 export default CreateOcdPage
