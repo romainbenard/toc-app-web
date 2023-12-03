@@ -7,6 +7,10 @@ import { Ocd } from '@/types/ocd'
 
 type Props = { user: Session['user']; ocds: Ocd[] }
 
+//TODO: Create Component for items
+//TODO: Cursor based pagination + infinite scroll
+//TODO: Add FilterBy (category, date, location)
+
 const AllOcdsView = ({ ocds }: Props) => {
   return (
     <MainLayout>

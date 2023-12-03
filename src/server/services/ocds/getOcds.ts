@@ -16,6 +16,7 @@ export const getOcds = async (query: QueryOcds, token: string) => {
     },
   })
 
+  //TODO: handle server error instead of returning [] and display it in UI
   if (!res.ok) return []
 
   const data: ApiResponse<Ocd[]> = await res.json()
