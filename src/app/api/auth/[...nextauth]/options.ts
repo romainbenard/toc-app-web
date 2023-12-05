@@ -50,6 +50,9 @@ export const options: NextAuthOptions = {
     strategy: 'jwt',
     maxAge: 24 * 60 * 60,
   },
+  pages: {
+    signIn: '/auth/signin',
+  },
   callbacks: {
     async signIn({ user, account }) {
       if (!user || !account || account.type === 'email') return false
