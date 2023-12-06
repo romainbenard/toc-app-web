@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { signIn, SignInOptions } from 'next-auth/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -28,16 +29,25 @@ type Props = {
 }
 
 const LoginPageView = ({ providers }: Props) => {
+  const router = useRouter()
   const {
     register,
     formState: { errors, isValid },
     handleSubmit,
+    setError,
   } = useForm<LoginFormInputs>({
     resolver: zodResolver(loginValidation),
   })
 
   const onSubmit = async (data: LoginFormInputs) => {
-    signIn('credentials', data)
+    const res = await signIn('credentials', {
+      ...data,
+      redirect: false,
+    })
+
+    if (!res?.ok) return setError('root', { message: 'An error occured' })
+
+    router.replace('/dashboard')
   }
 
   return (
@@ -70,9 +80,7 @@ const LoginPageView = ({ providers }: Props) => {
           >
             Me connecter
           </Button>
-          {(errors.email || errors.password) && (
-            <ErrorInput error="Merci de vérifier vos identifiants" />
-          )}
+          <ErrorInput error={errors.root?.message || ''} />
         </form>
         <p className="mt-2 text-xs text-center underline text-secondary-50">
           <Link href="/">Sign up with email here</Link>
