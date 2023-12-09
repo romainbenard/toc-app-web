@@ -25,13 +25,13 @@ const fetchAppInstance = async <T>(
     .then(res => {
       if (!res.ok) {
         // TODO: Update after server response status improvement
-        throw new Error(`Request failed: \n ${res}`)
+        throw new Error('Request failed')
       }
 
       return res.json()
     })
-    .catch(err => {
-      throw new Error(err)
+    .catch(() => {
+      return { success: false }
     })
 }
 

@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -8,16 +9,19 @@ import Button from '@/components/ui/Button'
 import ErrorInput from '@/components/ui/ErrorInput'
 import Input from '@/components/ui/Input'
 import Label from '@/components/ui/Label'
+import { ApiResponse } from '@/types/ApiServer'
 import { Colors } from '@/types/Colors.d'
+import { User } from '@/types/User'
+import fetchAppInstance from '@/utils/fetchAppInstance'
 
 interface SignUpFormInputs {
-  firstname: string
+  name: string
   email: string
   password: string
 }
 
 const loginValidation = z.object({
-  firstname: z.string().min(1),
+  name: z.string().min(1),
   email: z.string().email(),
   password: z.string().min(8),
 })
@@ -25,14 +29,25 @@ const loginValidation = z.object({
 const SignUpView = () => {
   const {
     register,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitSuccessful },
     handleSubmit,
+    setError,
   } = useForm<SignUpFormInputs>({
     resolver: zodResolver(loginValidation),
   })
 
   const onSubmit = async (data: SignUpFormInputs) => {
-    console.log('coucou')
+    const res: ApiResponse<User> = await fetchAppInstance(
+      '/users/signup',
+      'POST',
+      { ...data, loginType: 'credentials', loginProvider: 'credentials' }
+    )
+
+    if (!res.success) {
+      return setError('root', {
+        message: 'A server error occurred, please try again',
+      })
+    }
   }
 
   return (
@@ -48,17 +63,8 @@ const SignUpView = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="flex flex-col self-stretch">
-            <Label
-              name="Firstname"
-              htmlFor="firstname"
-              className="text-white"
-            />
-            <Input
-              {...register('firstname')}
-              type="text"
-              id="firstname"
-              required
-            />
+            <Label name="Name" htmlFor="name" className="text-white" />
+            <Input {...register('name')} type="text" id="name" required />
           </div>
 
           <div className="flex flex-col self-stretch">
@@ -83,7 +89,17 @@ const SignUpView = () => {
           >
             Sign up
           </Button>
-          <ErrorInput error={errors.root?.message || ''} />
+
+          {isSubmitSuccessful ? (
+            <p className="text-center">
+              Your account is created, Please{' '}
+              <Link className="underline" href="/auth/signin">
+                sign in here
+              </Link>
+            </p>
+          ) : (
+            <ErrorInput error={errors.root?.message || ''} />
+          )}
         </form>
       </div>
     </main>

@@ -55,7 +55,7 @@ const CreateOcdView = ({ token }: Props) => {
 
     if (!res.success) {
       return setError('root.serverError', {
-        message: 'A server error occured, please try again',
+        message: 'A server error occurred, please try again',
       })
     }
 
