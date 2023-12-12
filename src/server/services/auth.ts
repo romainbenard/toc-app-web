@@ -33,6 +33,23 @@ export const logInUser = async (credentials: LogInBody) => {
   return data.data
 }
 
+export const logOutUser = async (token: string) => {
+  const res = await fetch(`${server.url}/auth/logout`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
+
+  if (!res.ok) {
+    console.error('[#logOutUser] Failed: ', await res.json())
+    throw new Error('Log out failed')
+  }
+
+  return res.json()
+}
+
 export const signUpUser = async (body: SignUpBody) => {
   const parse = signUpValidation.safeParse(body)
 
