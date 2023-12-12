@@ -1,7 +1,15 @@
-export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1>Hello World</h1>
-    </main>
-  )
+import { redirect } from 'next/navigation'
+import { getServerSession } from 'next-auth'
+import { options } from './api/auth/[...nextauth]/options'
+
+const Home = async () => {
+  const session = await getServerSession(options)
+
+  if (session) {
+    redirect('/dashboard')
+  }
+
+  return redirect('/auth/signin')
 }
+
+export default Home

@@ -10,7 +10,7 @@ const CreateOcdPage = async () => {
   const session = await getServerSession(options)
 
   if (!session || !session.user || !session.accessToken) {
-    redirect(`${appUrl}/api/auth/signin/providers`)
+    redirect(`${appUrl}/auth/signin`)
   }
 
   return <CreateOcdView user={session.user} token={session.accessToken} />
