@@ -4,11 +4,12 @@ import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-import LogoWithBaseline from '@/components/Logos/LogoWithBaseline'
+import ErrorInput from '@/components/form/ErrorInput'
+import Input from '@/components/form/Input'
+import Label from '@/components/form/Label'
+import LogoWithBaseline from '@/components/logos/LogoWithBaseline'
 import Button from '@/components/ui/Button'
-import ErrorInput from '@/components/ui/ErrorInput'
-import Input from '@/components/ui/Input'
-import Label from '@/components/ui/Label'
+import RoundedBlock from '@/components/ui/RoundedBlock'
 import { ApiResponse } from '@/types/ApiServer'
 import { Colors } from '@/types/Colors.d'
 import { User } from '@/types/User'
@@ -54,7 +55,7 @@ const SignUpView = () => {
     <main className="w-screen h-screen bg-secondary-500 px-8 py-8 flex flex-col justify-evenly items-center">
       <LogoWithBaseline color={Colors.WHITE} height={76} />
 
-      <div className="w-full p-8 bg-secondary-600 rounded-2xl">
+      <RoundedBlock className="bg-secondary-600 h-fit">
         <h1 className="text-white text-center mb-6 font-light text-3xl">
           Sign up
         </h1>
@@ -101,7 +102,7 @@ const SignUpView = () => {
             <ErrorInput error={errors.root?.message || ''} />
           )}
         </form>
-      </div>
+      </RoundedBlock>
     </main>
   )
 }

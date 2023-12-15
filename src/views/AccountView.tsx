@@ -2,7 +2,7 @@
 
 import { Session } from 'next-auth'
 import { signOut } from 'next-auth/react'
-import MainLayout from '@/components/Layout/MainLayout'
+import MainLayout from '@/components/layouts/MainLayout'
 import fetchAppInstance from '@/utils/fetchAppInstance'
 
 type Props = { user: Session['user']; token: string }
