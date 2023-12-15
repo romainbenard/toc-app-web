@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { ProvidersSignInList } from '@/app/auth/signin/page'
 import LogoWithBaseline from '@/components/Logos/LogoWithBaseline'
+import RoundedBlock from '@/components/RoundedBlock'
 import Button from '@/components/ui/Button'
 import ErrorInput from '@/components/ui/ErrorInput'
 import Input from '@/components/ui/Input'
@@ -53,7 +54,7 @@ const SignInView = ({ providers }: Props) => {
   return (
     <main className="w-screen h-screen bg-secondary-500 px-8 py-8 flex flex-col justify-evenly items-center">
       <LogoWithBaseline color={Colors.WHITE} />
-      <div className="w-full p-8 bg-secondary-600 rounded-2xl">
+      <RoundedBlock className="bg-secondary-600 h-fit">
         <form
           className="mt-2 flex flex-col items-center"
           onSubmit={handleSubmit(onSubmit)}
@@ -85,7 +86,7 @@ const SignInView = ({ providers }: Props) => {
         <p className="mt-2 text-xs text-center underline text-secondary-50">
           <Link href="/auth/signup">Sign up with email here</Link>
         </p>
-      </div>
+      </RoundedBlock>
 
       {providers && (
         <div className="text-center">
