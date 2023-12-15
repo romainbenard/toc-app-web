@@ -1,5 +1,5 @@
-import MainLayout from '@/components/Layout/MainLayout'
-import RoundedBlock from '@/components/RoundedBlock'
+import MainLayout from '@/components/layouts/MainLayout'
+import RoundedBlock from '@/components/ui/RoundedBlock'
 import { Ocd } from '@/types/ocd'
 
 type Props = { ocd: Ocd }
