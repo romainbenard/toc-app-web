@@ -1,9 +1,12 @@
 import { useMemo } from 'react'
 import Link from 'next/link'
 import { Session } from 'next-auth'
+import { Info } from 'react-feather'
 import MainLayout from '@/components/layouts/MainLayout'
+import CircleAdd from '@/components/ui/CircleAdd'
 import RoundedBlock from '@/components/ui/RoundedBlock'
 import { Ocd } from '@/types/ocd'
+import { calculateTimeLost } from '@/utils/calculateTimeLost'
 
 type Props = {
   user: Session['user']
@@ -11,13 +14,10 @@ type Props = {
   previousOcds: Record<string, Ocd[]>
 }
 
-const DashboardView = ({ user, todayOcds, previousOcds }: Props) => {
+const DashboardView = ({ todayOcds, previousOcds }: Props) => {
   const todayEvents = todayOcds.length
   //timelost should be required (update back first)
-  const timelost = todayOcds.reduce(
-    (acc, { timeLost }) => acc + (timeLost || 0),
-    0
-  )
+  const timelost = calculateTimeLost(todayOcds)
 
   const trends = useMemo(() => {
     if (timelost < 10) return '☀️'
@@ -28,49 +28,64 @@ const DashboardView = ({ user, todayOcds, previousOcds }: Props) => {
 
   return (
     <MainLayout>
-      <h1 className="text-secondary-500 mb-6">Hello {user?.name}</h1>
-
-      <p className="text-primary-500 text-3xl font-semibold mb-2">Today</p>
-      <div className="grid grid-cols-3 mb-10">
-        <div className="text-center text-secondary-500">
-          <p className="text-5xl">{todayEvents}</p>
-          <p className="uppercase">events</p>
+      <div className="flex flex-col gap-10 items-stretch">
+        <div>
+          <p className="text-primary-500 text-3xl font-semibold mb-2">Today</p>
+          <div className="grid grid-cols-3 gap-4">
+            <RoundedBlock className="text-center text-secondary-500 border border-secondary-100 bg-transparent py-4 px-2">
+              <p className="text-5xl">{todayEvents}</p>
+              <p className="text-sm uppercase">events</p>
+            </RoundedBlock>
+            <RoundedBlock className="text-center text-secondary-500 border border-secondary-100 bg-transparent py-4 px-2">
+              <p className="text-5xl">
+                {timelost}
+                <span className="text-base">min</span>
+              </p>
+              <p className="text-sm uppercase">Time spent</p>
+            </RoundedBlock>
+            <RoundedBlock className="text-center text-secondary-500 border border-secondary-100 bg-transparent py-4 px-2">
+              <p className="text-5xl">{trends}</p>
+              <p className="text-sm uppercase">trend</p>
+            </RoundedBlock>
+          </div>
         </div>
-        <div className="text-center text-secondary-500">
-          <p className="text-5xl">
-            {timelost}
-            <span className="text-base">min</span>
+
+        <div>
+          <p className="text-primary-500 font-semibold mb-2 text-lg">
+            Last Reports
           </p>
-          <p className="uppercase">timelost</p>
+          <RoundedBlock>
+            {Object.keys(previousOcds).length > 0 ? (
+              <div className="flex flex-col gap-2">
+                {Object.keys(previousOcds).map(date => (
+                  <div
+                    key={date}
+                    className="flex items-center justify-between rounded-lg w-full h-full bg-white text-secondary-500 border-transparent hover:border-secondary-200 border-2 transition-all p-3 text-lg"
+                  >
+                    <div>
+                      <p className="text-secondary-300 text-xs">{date}</p>
+                      <p>{previousOcds[date].length} events</p>
+                    </div>
+                    <div>
+                      <p className="text-secondary-300 text-xs">Time spent</p>
+                      <p className="text-secondary-300">
+                        {calculateTimeLost(previousOcds[date])}min
+                      </p>
+                    </div>
+                    <Info className="text-primary-500" />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-secondary-500">No reports found</p>
+            )}
+          </RoundedBlock>
         </div>
-        <div className="text-center text-secondary-500">
-          <p className="text-5xl">{trends}</p>
-          <p className="uppercase">trend</p>
-        </div>
+
+        <Link className="self-center" href="/ocds/new">
+          <CircleAdd />
+        </Link>
       </div>
-
-      <p className="text-primary-500 font-semibold mb-2 text-lg">
-        Last Reports
-      </p>
-      <RoundedBlock className=" mb-8">
-        <div className="flex flex-col gap-2">
-          {Object.keys(previousOcds).map(date => (
-            <div
-              key={date}
-              className="rounded-lg w-full h-full bg-white text-secondary-500 border-transparent hover:border-secondary-200 border-2 transition-all px-2 py-3 text-lg"
-            >
-              <p className="text-secondary-300 text-xs">{date}</p>
-              <p>{previousOcds[date].length} events</p>
-            </div>
-          ))}
-        </div>
-      </RoundedBlock>
-
-      <Link href="/ocds/new">
-        <div className="flex justify-center items-center h-12 w-12 rounded-[50%] bg-primary-500 text-white font-semibold text-4xl">
-          +
-        </div>
-      </Link>
     </MainLayout>
   )
 }
