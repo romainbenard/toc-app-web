@@ -1,6 +1,7 @@
 import MainLayout from '@/components/layouts/MainLayout'
 import RoundedBlock from '@/components/ui/RoundedBlock'
 import { Ocd } from '@/types/ocd'
+import { formatDate } from '@/utils/date'
 
 type Props = { ocd: Ocd }
 
@@ -23,7 +24,7 @@ const SingleOcdView = ({ ocd }: Props) => {
     <MainLayout>
       <div>
         <div className="mb-4">
-          <p className="text-secondary-500">{date}</p>
+          <p className="text-secondary-500">{formatDate(date)}</p>
           <h1 className="text-primary-500 text-3xl leading-none font-bold">
             {name}
           </h1>

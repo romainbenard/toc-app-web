@@ -15,7 +15,10 @@ export const createOcdValidation = z.object({
   category: categoryValidation,
   intensity: z.number({ invalid_type_error: 'Required' }).min(0).max(5),
   location: locationValidation,
-  date: z.string(),
+  date: z
+    .string()
+    .transform(val => new Date(val).toISOString())
+    .pipe(z.string().datetime()),
   description: z.string().max(200).optional(),
   repetition: z.union([z.coerce.number().min(0).max(200), z.nan()]).optional(),
   timeLost: z.union([z.coerce.number().min(0), z.nan()]).optional(),
@@ -24,8 +27,10 @@ export const createOcdValidation = z.object({
 export const queryOcdsValidation = z.object({
   category: categoryValidation.optional(),
   location: locationValidation.optional(),
-  date: z.string().optional(),
+  to: z.string().datetime().optional(),
+  from: z.string().datetime().optional(),
   authorId: z.string().optional(),
+  orderBy: z.enum(['asc', 'desc']).default('desc').optional(),
 })
 
 export type QueryOcds = z.infer<typeof queryOcdsValidation>
