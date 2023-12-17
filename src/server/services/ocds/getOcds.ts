@@ -14,6 +14,7 @@ export const getOcds = async (query: QueryOcds, token: string) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
+    next: { revalidate: 30 },
   })
 
   //TODO: handle server error instead of returning [] and display it in UI
