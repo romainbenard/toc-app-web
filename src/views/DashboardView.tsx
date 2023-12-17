@@ -81,11 +81,11 @@ const DashboardView = ({ todayOcds, previousOcds }: Props) => {
             )}
           </RoundedBlock>
         </div>
-
-        <Link className="self-center" href="/ocds/new">
-          <CircleAdd />
-        </Link>
       </div>
+
+      <Link className="fixed bottom-20 right-4" href="/ocds/new">
+        <CircleAdd />
+      </Link>
     </MainLayout>
   )
 }
