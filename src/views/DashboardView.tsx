@@ -5,6 +5,7 @@ import FixedAddCTA from '@/components/ui/FixedAddCTA'
 import RoundedBlock from '@/components/ui/RoundedBlock'
 import { Ocd } from '@/types/ocd'
 import { calculateTimeLost } from '@/utils/calculateTimeLost'
+import { selectTodayTrend } from './dashboardView.viewmodel'
 
 type Props = {
   user: Session['user']
@@ -15,37 +16,35 @@ type Props = {
 const DashboardView = ({ todayOcds, previousOcds }: Props) => {
   const todayEvents = todayOcds.length
   //timelost should be required (update back first)
-  const timelost = calculateTimeLost(todayOcds)
-
-  const trends = useMemo(() => {
-    if (timelost < 10) return '☀️'
-    if (timelost >= 10 && timelost < 20) return '🌤️'
-    if (timelost >= 20 && timelost < 30) return '☁️'
-    if (timelost >= 30) return '🌧️'
-  }, [timelost])
+  const todayTimelost = calculateTimeLost(todayOcds)
+  const todayTrend = selectTodayTrend(todayTimelost)
 
   return (
     <MainLayout>
       <div className="flex flex-col gap-10 items-stretch">
         <div>
           <p className="text-primary-500 text-3xl font-semibold mb-2">Today</p>
-          <div className="grid grid-cols-3 gap-4">
-            <RoundedBlock className="text-center text-secondary-500 border border-secondary-100 bg-transparent py-4 px-2">
-              <p className="text-5xl">{todayEvents}</p>
-              <p className="text-sm uppercase">events</p>
-            </RoundedBlock>
-            <RoundedBlock className="text-center text-secondary-500 border border-secondary-100 bg-transparent py-4 px-2">
-              <p className="text-5xl">
-                {timelost}
-                <span className="text-base">min</span>
-              </p>
-              <p className="text-sm uppercase">Time spent</p>
-            </RoundedBlock>
-            <RoundedBlock className="text-center text-secondary-500 border border-secondary-100 bg-transparent py-4 px-2">
-              <p className="text-5xl">{trends}</p>
-              <p className="text-sm uppercase">trend</p>
-            </RoundedBlock>
-          </div>
+          {todayOcds.length > 0 ? (
+            <div className="grid grid-cols-3 gap-4">
+              <RoundedBlock className="text-center text-secondary-500 border border-secondary-100 bg-transparent py-4 px-2">
+                <p className="text-5xl">{todayEvents}</p>
+                <p className="text-sm uppercase">events</p>
+              </RoundedBlock>
+              <RoundedBlock className="text-center text-secondary-500 border border-secondary-100 bg-transparent py-4 px-2">
+                <p className="text-5xl">
+                  {todayTimelost}
+                  <span className="text-base">min</span>
+                </p>
+                <p className="text-sm uppercase">Time spent</p>
+              </RoundedBlock>
+              <RoundedBlock className="text-center text-secondary-500 border border-secondary-100 bg-transparent py-4 px-2">
+                <p className="text-5xl">{todayTrend}</p>
+                <p className="text-sm uppercase">trend</p>
+              </RoundedBlock>
+            </div>
+          ) : (
+            <p className="text-secondary-500">No OCDs reported today</p>
+          )}
         </div>
 
         <div>
