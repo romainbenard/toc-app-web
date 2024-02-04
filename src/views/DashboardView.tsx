@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { Session } from 'next-auth'
 import { Info } from 'react-feather'
 import MainLayout from '@/components/layouts/MainLayout'
@@ -5,7 +6,7 @@ import FixedAddCTA from '@/components/ui/FixedAddCTA'
 import RoundedBlock from '@/components/ui/RoundedBlock'
 import { Ocd } from '@/types/ocd'
 import { calculateTimeLost } from '@/utils/calculateTimeLost'
-import { selectTodayTrend } from './dashboardView.viewmodel'
+import { formatDateForUrl, selectTodayTrend } from './dashboardView.viewmodel'
 
 type Props = {
   user: Session['user']
@@ -23,7 +24,9 @@ const DashboardView = ({ todayOcds, previousOcds }: Props) => {
     <MainLayout>
       <div className="flex flex-col gap-10 items-stretch">
         <div>
-          <p className="text-primary-500 text-3xl font-semibold mb-2">Today</p>
+          <h2 className="text-primary-500 text-3xl font-semibold mb-2">
+            Today
+          </h2>
           {todayOcds.length > 0 ? (
             <div className="grid grid-cols-3 gap-4">
               <RoundedBlock className="text-center text-secondary-500 border border-secondary-100 bg-transparent py-4 px-2">
@@ -48,16 +51,17 @@ const DashboardView = ({ todayOcds, previousOcds }: Props) => {
         </div>
 
         <div>
-          <p className="text-primary-500 font-semibold mb-2 text-lg">
+          <h2 className="text-primary-500 font-semibold mb-2 text-lg">
             Last Reports
-          </p>
+          </h2>
           <RoundedBlock>
             {Object.keys(previousOcds).length > 0 ? (
               <div className="flex flex-col gap-2">
                 {Object.keys(previousOcds).map(date => (
-                  <div
+                  <Link
                     key={date}
-                    className="flex items-center justify-between rounded-lg w-full h-full bg-white text-secondary-500 border-transparent hover:border-secondary-200 border-2 transition-all p-3 text-lg"
+                    href={`/ocds?date=${formatDateForUrl(date)}`}
+                    className="flex items-center justify-between rounded-lg w-full h-full bg-white text-secondary-500 border-transparent hover:border-secondary-200 border-2 transition-all p-3 text-lg hover:cursor-pointer"
                   >
                     <div>
                       <p className="text-secondary-300 text-xs">{date}</p>
@@ -70,7 +74,7 @@ const DashboardView = ({ todayOcds, previousOcds }: Props) => {
                       </p>
                     </div>
                     <Info className="text-primary-500" />
-                  </div>
+                  </Link>
                 ))}
               </div>
             ) : (

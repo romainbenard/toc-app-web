@@ -4,3 +4,7 @@ export const selectTodayTrend = (timelost: number) => {
   if (timelost >= 20 && timelost < 30) return '☁️'
   if (timelost >= 30) return '🌧️'
 }
+
+export const formatDateForUrl = (date: string) => {
+  return date.replaceAll('/', '_')
+}

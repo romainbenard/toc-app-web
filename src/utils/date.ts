@@ -7,3 +7,8 @@ export const getAnteriorDate = (daysToSubstract: number, date?: Date) => {
 
 export const formatDate = (date: Date) =>
   new Intl.DateTimeFormat('en-US').format(new Date(date))
+
+export const getDate = (d: Date) => {
+  var os = d.getTimezoneOffset()
+  return new Date(d.getTime() - os * 60 * 1000)
+}
