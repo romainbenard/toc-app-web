@@ -1,3 +1,4 @@
+import { revalidatePath } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 import config from '@/config'
 import { ApiResponse } from '@/types/ApiServer'
@@ -32,6 +33,7 @@ const POST = async (req: NextRequest) => {
     })
     const data: ApiResponse<Ocd> = await res.json()
 
+    revalidatePath('/')
     return NextResponse.json(data)
   } catch (error) {
     console.log(`[api/o/create] #POST`, error)

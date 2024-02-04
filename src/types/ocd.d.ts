@@ -21,7 +21,7 @@ type Ocd = {
   date: Date
   description?: string
   repetition?: number
-  timeLost?: number
+  timeLost: number
   createdAt: string
   updatedAt: string
   author: string
