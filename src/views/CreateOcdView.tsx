@@ -71,13 +71,13 @@ const CreateOcdView = ({ token }: Props) => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="flex flex-col col-span-3">
-            <Label name="Name" htmlFor="name" />
+            <Label name="Name" htmlFor="name" aria-required={true} />
             <Input {...register('name')} type="text" id="name" required />
             <ErrorInput error={errors.name?.message || ''} />
           </div>
 
           <div className="flex flex-col col-span-1">
-            <Label name="Intensity" htmlFor="intensity" />
+            <Label name="Intensity" htmlFor="intensity" aria-required={true} />
             <Select
               {...register('intensity', { valueAsNumber: true })}
               options={intensityOptions}
@@ -88,7 +88,7 @@ const CreateOcdView = ({ token }: Props) => {
           </div>
 
           <div className="flex flex-col col-span-2">
-            <Label name="Location" htmlFor="location" />
+            <Label name="Location" htmlFor="location" aria-required={true} />
             <Select
               {...register('location')}
               id="location"
@@ -99,7 +99,7 @@ const CreateOcdView = ({ token }: Props) => {
           </div>
 
           <div className="flex flex-col col-span-2">
-            <Label name="Category" htmlFor="category" />
+            <Label name="Category" htmlFor="category" aria-required={true} />
             <Select
               {...register('category')}
               id="category"
@@ -110,18 +110,19 @@ const CreateOcdView = ({ token }: Props) => {
           </div>
 
           <div className="flex flex-col col-span-2">
-            <Label name="Time lost" htmlFor="timeLost" />
+            <Label name="Time lost" htmlFor="timeLost" aria-required={true} />
             <Input
               {...register('timeLost', { valueAsNumber: true })}
               type="number"
               id="timeLost"
               min={0}
+              required
             />
             <ErrorInput error={errors.timeLost?.message || ''} />
           </div>
 
           <div className="flex flex-col col-span-2">
-            <Label name="Date" htmlFor="date" />
+            <Label name="Date" htmlFor="date" aria-required={true} />
             <Input {...register('date')} type="date" id="date" required />
             <ErrorInput error={errors.date?.message || ''} />
           </div>

@@ -20,7 +20,6 @@ type Ocd = {
   location: string
   date: Date
   description?: string
-  repetition?: number
   timeLost: number
   createdAt: string
   updatedAt: string
