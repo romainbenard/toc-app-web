@@ -6,7 +6,11 @@ import FixedAddCTA from '@/components/ui/FixedAddCTA'
 import RoundedBlock from '@/components/ui/RoundedBlock'
 import { Ocd } from '@/types/ocd'
 import { calculateTimeLost } from '@/utils/calculateTimeLost'
-import { formatDateForUrl, selectTodayTrend } from './dashboardView.viewmodel'
+import {
+  formatDateForUrl,
+  generateCheerSentence,
+  selectTodayTrend,
+} from './dashboardView.viewmodel'
 
 type Props = {
   user: Session['user']
@@ -14,7 +18,7 @@ type Props = {
   previousOcds: Record<string, Ocd[]>
 }
 
-const DashboardView = ({ todayOcds, previousOcds }: Props) => {
+const DashboardView = ({ todayOcds, previousOcds, user }: Props) => {
   const todayEvents = todayOcds.length
   //timelost should be required (update back first)
   const todayTimelost = calculateTimeLost(todayOcds)
@@ -23,6 +27,9 @@ const DashboardView = ({ todayOcds, previousOcds }: Props) => {
   return (
     <MainLayout>
       <div className="flex flex-col gap-10 items-stretch">
+        <p className="text-secondary-500 text-xl">
+          {generateCheerSentence({ todayOcds, previousOcds }, user)}
+        </p>
         <div>
           <h2 className="text-primary-500 text-3xl font-semibold mb-2">
             Today

@@ -21,7 +21,7 @@ export const createOcdValidation = z.object({
     .pipe(z.string().datetime()),
   description: z.string().max(200).optional(),
   repetition: z.union([z.coerce.number().min(0).max(200), z.nan()]).optional(),
-  timeLost: z.union([z.coerce.number().min(0), z.nan()]).optional(),
+  timeLost: z.union([z.coerce.number().min(0), z.nan()]),
 })
 
 export const queryOcdsValidation = z.object({

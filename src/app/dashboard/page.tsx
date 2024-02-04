@@ -12,6 +12,7 @@ import { options } from '../api/auth/[...nextauth]/options'
 const { appUrl } = config
 
 const TODAY = new Intl.DateTimeFormat('en-US').format(new Date())
+const WEEK_DAYS = 7
 
 const DashboardPage = async () => {
   const session = await getServerSession(options)
@@ -23,7 +24,7 @@ const DashboardPage = async () => {
   const { user, accessToken } = session
 
   const ocds = await getOcds(
-    { authorId: user.id, from: getAnteriorDate(10) },
+    { authorId: user.id, from: getAnteriorDate(WEEK_DAYS) },
     accessToken
   )
 
