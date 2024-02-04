@@ -1,9 +1,7 @@
-import { useMemo } from 'react'
-import Link from 'next/link'
 import { Session } from 'next-auth'
 import { Info } from 'react-feather'
 import MainLayout from '@/components/layouts/MainLayout'
-import CircleAdd from '@/components/ui/CircleAdd'
+import FixedAddCTA from '@/components/ui/FixedAddCTA'
 import RoundedBlock from '@/components/ui/RoundedBlock'
 import { Ocd } from '@/types/ocd'
 import { calculateTimeLost } from '@/utils/calculateTimeLost'
@@ -81,11 +79,9 @@ const DashboardView = ({ todayOcds, previousOcds }: Props) => {
             )}
           </RoundedBlock>
         </div>
-
-        <Link className="self-center" href="/ocds/new">
-          <CircleAdd />
-        </Link>
       </div>
+
+      <FixedAddCTA />
     </MainLayout>
   )
 }
