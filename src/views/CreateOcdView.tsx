@@ -139,7 +139,7 @@ const CreateOcdView = ({ token }: Props) => {
           </div>
 
           <div>
-            <Button type="submit">Envoyer</Button>
+            <Button type="submit">Add</Button>
           </div>
         </form>
       </RoundedBlock>

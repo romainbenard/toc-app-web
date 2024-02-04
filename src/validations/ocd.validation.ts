@@ -1,5 +1,8 @@
 import { z } from 'zod'
 
+const isDateAfter = (dateInput: string) =>
+  new Date(dateInput).getTime() < Date.now()
+
 const categoryValidation = z.enum(
   ['CHECKING', 'ORGANISATION', 'CONTAMINATION', 'INTRUSIVE_THOUGHT'],
   { errorMap: () => ({ message: 'Required' }) }
@@ -17,6 +20,9 @@ export const createOcdValidation = z.object({
   location: locationValidation,
   date: z
     .string()
+    .refine(val => isDateAfter(val), {
+      message: 'Select today or before',
+    })
     .transform(val => new Date(val).toISOString())
     .pipe(z.string().datetime()),
   description: z.string().max(200).optional(),
