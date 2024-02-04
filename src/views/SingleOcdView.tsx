@@ -9,16 +9,8 @@ type Props = { ocd: Ocd }
 //TODO: subcomponent for styling
 
 const SingleOcdView = ({ ocd }: Props) => {
-  const {
-    name,
-    date,
-    category,
-    location,
-    description,
-    repetition,
-    timeLost,
-    intensity,
-  } = ocd
+  const { name, date, category, location, description, timeLost, intensity } =
+    ocd
 
   return (
     <MainLayout>
@@ -30,7 +22,7 @@ const SingleOcdView = ({ ocd }: Props) => {
           </h1>
         </div>
         <RoundedBlock>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-8">
             <div className="text-secondary-500 col-span-1">
               <p className="text-primary-500">CATEGORY</p>
               <p>{category.toLowerCase()}</p>
@@ -42,10 +34,6 @@ const SingleOcdView = ({ ocd }: Props) => {
             <div className="text-secondary-500 col-span-2">
               <p className="text-primary-500">DETAILS</p>
               <p>{description || '-'}</p>
-            </div>
-            <div className="text-secondary-500 col-span-1">
-              <p className="text-primary-500">REPETITION</p>
-              <p>{repetition || '-'}</p>
             </div>
             <div className="text-secondary-500 col-span-1">
               <p className="text-primary-500">TIME LOST</p>

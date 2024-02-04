@@ -29,8 +29,7 @@ type CreateOcdFormInputs = {
   location: OcdLocation
   date: string
   description?: string
-  repetition?: number
-  timeLost?: number
+  timeLost: number
 }
 
 type Props = { user: Session['user']; token: string }
@@ -111,18 +110,6 @@ const CreateOcdView = ({ token }: Props) => {
           </div>
 
           <div className="flex flex-col col-span-2">
-            <Label name="Repetition" htmlFor="repetition" />
-            <Input
-              {...register('repetition', { valueAsNumber: true })}
-              type="number"
-              id="repetition"
-              min={0}
-              max={200}
-            />
-            <ErrorInput error={errors.repetition?.message || ''} />
-          </div>
-
-          <div className="flex flex-col col-span-2">
             <Label name="Time lost" htmlFor="timeLost" />
             <Input
               {...register('timeLost', { valueAsNumber: true })}
@@ -133,7 +120,7 @@ const CreateOcdView = ({ token }: Props) => {
             <ErrorInput error={errors.timeLost?.message || ''} />
           </div>
 
-          <div className="flex flex-col col-span-4">
+          <div className="flex flex-col col-span-2">
             <Label name="Date" htmlFor="date" />
             <Input {...register('date')} type="date" id="date" required />
             <ErrorInput error={errors.date?.message || ''} />
@@ -144,6 +131,7 @@ const CreateOcdView = ({ token }: Props) => {
             <TextArea
               {...register('description')}
               maxLength={280}
+              rows={6}
               id="description"
             />
             <ErrorInput error={errors.description?.message || ''} />
