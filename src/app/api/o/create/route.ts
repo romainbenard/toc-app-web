@@ -34,9 +34,9 @@ const POST = async (req: NextRequest) => {
     const data: ApiResponse<Ocd> = await res.json()
 
     revalidatePath('/')
-    return NextResponse.json(data)
+    return NextResponse.json(data, { status: 201 })
   } catch (error) {
-    console.log(`[api/o/create] #POST`, error)
+    console.error(`[api/o/create] #POST`, error)
 
     throw new Error(`[api/o/create] POST Request Failed`)
   }

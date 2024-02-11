@@ -12,9 +12,9 @@ import TextArea from '@/components/form/TextArea'
 import MainLayout from '@/components/layouts/MainLayout'
 import Button from '@/components/ui/Button'
 import RoundedBlock from '@/components/ui/RoundedBlock'
-import { ApiResponse } from '@/types/ApiServer'
-import { Ocd, OcdCategory, OcdLocation } from '@/types/ocd.d'
-import fetchAppInstance from '@/utils/fetchAppInstance'
+import config from '@/config'
+import enData from '@/data/en'
+import { OcdCategory, OcdLocation } from '@/types/ocd.d'
 import {
   categoryOptions,
   intensityOptions,
@@ -47,19 +47,20 @@ const CreateOcdView = ({ token }: Props) => {
   })
 
   const onSubmit = async (data: CreateOcdFormInputs) => {
-    const res: ApiResponse<Ocd> = await fetchAppInstance<CreateOcdFormInputs>(
-      `/o/create?token=${token}`,
-      'POST',
-      data
-    )
+    try {
+      var res = await fetch(`${config.appUrl}/api/o/create?token=${token}`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+      })
 
-    if (!res.success) {
-      return setError('root.serverError', {
-        message: 'A server error occurred, please try again',
+      const body = await res.json()
+
+      router.replace(`/ocds/${body?.data.id}`)
+    } catch (error) {
+      setError('root.serverError', {
+        message: enData.errors.default,
       })
     }
-
-    router.replace(`/ocds/${res.data?.id}`)
   }
 
   return (
