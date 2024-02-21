@@ -12,9 +12,9 @@ import TextArea from '@/components/form/TextArea'
 import MainLayout from '@/components/layouts/MainLayout'
 import Button from '@/components/ui/Button'
 import RoundedBlock from '@/components/ui/RoundedBlock'
-import { ApiResponse } from '@/types/ApiServer'
-import { Ocd, OcdCategory, OcdLocation } from '@/types/ocd.d'
-import fetchAppInstance from '@/utils/fetchAppInstance'
+import config from '@/config'
+import enData from '@/data/en'
+import { OcdCategory, OcdLocation } from '@/types/ocd.d'
 import {
   categoryOptions,
   intensityOptions,
@@ -29,8 +29,7 @@ type CreateOcdFormInputs = {
   location: OcdLocation
   date: string
   description?: string
-  repetition?: number
-  timeLost?: number
+  timeLost: number
 }
 
 type Props = { user: Session['user']; token: string }
@@ -48,19 +47,20 @@ const CreateOcdView = ({ token }: Props) => {
   })
 
   const onSubmit = async (data: CreateOcdFormInputs) => {
-    const res: ApiResponse<Ocd> = await fetchAppInstance<CreateOcdFormInputs>(
-      `/o/create?token=${token}`,
-      'POST',
-      data
-    )
+    try {
+      var res = await fetch(`${config.appUrl}/api/o/create?token=${token}`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+      })
 
-    if (!res.success) {
-      return setError('root.serverError', {
-        message: 'A server error occurred, please try again',
+      const body = await res.json()
+
+      router.replace(`/ocds/${body?.data.id}`)
+    } catch (error) {
+      setError('root.serverError', {
+        message: enData.errors.default,
       })
     }
-
-    router.replace(`/ocds/${res.data?.id}`)
   }
 
   return (
@@ -72,13 +72,13 @@ const CreateOcdView = ({ token }: Props) => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="flex flex-col col-span-3">
-            <Label name="Name" htmlFor="name" />
+            <Label name="Name" htmlFor="name" aria-required={true} />
             <Input {...register('name')} type="text" id="name" required />
             <ErrorInput error={errors.name?.message || ''} />
           </div>
 
           <div className="flex flex-col col-span-1">
-            <Label name="Intensity" htmlFor="intensity" />
+            <Label name="Intensity" htmlFor="intensity" aria-required={true} />
             <Select
               {...register('intensity', { valueAsNumber: true })}
               options={intensityOptions}
@@ -89,7 +89,7 @@ const CreateOcdView = ({ token }: Props) => {
           </div>
 
           <div className="flex flex-col col-span-2">
-            <Label name="Location" htmlFor="location" />
+            <Label name="Location" htmlFor="location" aria-required={true} />
             <Select
               {...register('location')}
               id="location"
@@ -100,7 +100,7 @@ const CreateOcdView = ({ token }: Props) => {
           </div>
 
           <div className="flex flex-col col-span-2">
-            <Label name="Category" htmlFor="category" />
+            <Label name="Category" htmlFor="category" aria-required={true} />
             <Select
               {...register('category')}
               id="category"
@@ -111,30 +111,19 @@ const CreateOcdView = ({ token }: Props) => {
           </div>
 
           <div className="flex flex-col col-span-2">
-            <Label name="Repetition" htmlFor="repetition" />
-            <Input
-              {...register('repetition', { valueAsNumber: true })}
-              type="number"
-              id="repetition"
-              min={0}
-              max={200}
-            />
-            <ErrorInput error={errors.repetition?.message || ''} />
-          </div>
-
-          <div className="flex flex-col col-span-2">
-            <Label name="Time lost" htmlFor="timeLost" />
+            <Label name="Time lost" htmlFor="timeLost" aria-required={true} />
             <Input
               {...register('timeLost', { valueAsNumber: true })}
               type="number"
               id="timeLost"
               min={0}
+              required
             />
             <ErrorInput error={errors.timeLost?.message || ''} />
           </div>
 
-          <div className="flex flex-col col-span-4">
-            <Label name="Date" htmlFor="date" />
+          <div className="flex flex-col col-span-2">
+            <Label name="Date" htmlFor="date" aria-required={true} />
             <Input {...register('date')} type="date" id="date" required />
             <ErrorInput error={errors.date?.message || ''} />
           </div>
@@ -144,13 +133,14 @@ const CreateOcdView = ({ token }: Props) => {
             <TextArea
               {...register('description')}
               maxLength={280}
+              rows={6}
               id="description"
             />
             <ErrorInput error={errors.description?.message || ''} />
           </div>
 
           <div>
-            <Button type="submit">Envoyer</Button>
+            <Button type="submit">Add</Button>
           </div>
         </form>
       </RoundedBlock>

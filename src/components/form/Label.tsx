@@ -11,7 +11,7 @@ const Label: FC<Props> = ({ name, className, ...props }) => {
       className={cn('text-secondary-600 text-sm mb-1', className)}
       {...props}
     >
-      {name}
+      {name} {!props['aria-required'] && '(optional)'}
     </label>
   )
 }
