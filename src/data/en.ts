@@ -1,4 +1,18 @@
 const enData = {
+  ocd: {
+    category: {
+      checking: 'Checking',
+      organization: 'Organization',
+      contamination: 'Contamination',
+      intrusiveThought: 'Intrusive Tought',
+    },
+    location: {
+      home: 'Home',
+      work: 'Work',
+      publicTransport: 'Public Transport',
+      outdoor: 'Outdoor',
+    },
+  },
   errors: {
     inputs: {
       required: 'Required',
